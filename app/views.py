@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import HttpResponseRedirect
-\
+
 def home(request):
     if request.user.is_authenticated:
         customer = request.user
@@ -277,11 +277,27 @@ def updateItem(request):
     else:
         return JsonResponse({'error': 'Yêu cầu không hợp lệ'}, status=400)
     
-def product_category(request, category):
-    product = Product.objects.all()
-    category = Category.objects.all()
-    context={'products': product, 'categories': category }
-    return render(request,'app/product_category.html',context)
+def product_category(request, category_name):
+    # Lấy danh mục từ tên được truyền vào
+    category = get_object_or_404(Category, category_name=category_name)
+    # Lọc sản phẩm dựa trên danh mục đã chọn
+    products = Product.objects.filter(category=category)
+    # Lấy tất cả các danh mục
+    all_categories = Category.objects.all()
+    context = {
+        'products': products,
+        'selected_category': category,
+        'categories': all_categories
+    }
+    return render(request, 'app/product_category.html', context)
+@login_required
+def manage_user(request):
+    # Lấy đối tượng Customer dựa trên username của người dùng hiện tại
+    customer = get_object_or_404(Customer, username=request.user.username)
+    context = {
+        'customer': customer
+    }
+    return render(request, 'app/manage_user.html', context)
 
 import hashlib
 import hmac

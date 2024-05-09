@@ -146,6 +146,11 @@
             padding: 2px 6px;
             font-size: 12px;
           }
+          nav {
+            background-color: #4CAF50; /* Mã màu nền */
+            padding: 10px; /* Khoảng cách nội dung với viền của <nav> */
+            color: white; /* Màu chữ */
+          }
         </style>  
     </head>
     <body>
@@ -155,7 +160,7 @@
 
         <!--Menu-->
         <!--Menu-->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" style="height: 60px;">
           <div class="container-fluid">
               <a class="navbar-brand" href="{% url 'home' %}">
                   <img src="{% static 'app/images/logo/image.jpg' %}" alt="Logo" style="width: 100px; height: auto;">
@@ -170,7 +175,7 @@
                       </li>
                       <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Sản Phẩm
+                              Danh mục
                           </a>
                           <ul class="dropdown-menu">
                             {% for category in categories %}
@@ -193,59 +198,62 @@
                   </form>
               </div>
               {% if user.is_authenticated %}
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% if request.user.is_authenticated %}
-                            Xin chào, {{ request.user.username }}
-                        {% else %}
-                            Đăng Nhập
-                        {% endif %}
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% if request.user.is_authenticated %}
-                            <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="#">Cài đặt</a></li>
-                            <li>
-                                <span>
-                                    <a class="dropdown-item" href="{% url 'logout' %}">Thoát</a>
-                                </span>
-                            </li>
-                        {% else %}
-                            <li><a class="dropdown-item" href="{% url 'login' %}">Đăng Nhập</a></li>
-                            <li><a class="dropdown-item" href="{% url 'register' %}">Đăng Ký</a></li>
-                        {% endif %}
-                    </ul>
-                </li>
-              </ul>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if request.user.is_authenticated %}
+                                Xin chào, {{ request.user.username }}
+                            {% else %}
+                                Đăng Nhập
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if request.user.is_authenticated %}
+                                <li><a class="dropdown-item" href="{% url 'manage_user' %}">Trang cá nhân</a></li>
+                                <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
+                                <li>
+                                    <span>
+                                        <a class="dropdown-item" href="{% url 'logout' %}">Thoát</a>
+                                    </span>
+                                </li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'login' %}">Đăng Nhập</a></li>
+                                <li><a class="dropdown-item" href="{% url 'register' %}">Đăng Ký</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
               {% else %}
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                      <a class="nav-link" href="{% url 'login' %}">Đăng Nhập</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="{% url 'register' %}">Đăng Ký</a>
-                  </li>
-              </ul>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Đăng Nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Đăng Ký</a>
+                    </li>
+                </ul>
               {% endif %}
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}">
-                        <i class="material-icons" style="margin-right: 5px">shopping_cart</i>
-                        <span class="cart-quantity" style="position: absolute; top: 10px; right: 0; background-color: #f00; color: #fff; border-radius: 50%; padding: 5px;">{{ total_quantity }}</span>
-                    </a>
-                </li>
-              </ul>
+
+              {% if user.is_authenticated %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart' %}">
+                            <i class="material-icons" style="margin-right: 5px">shopping_cart</i>
+                            <span class="cart-quantity" style="position: absolute; top: 10px; right: 0; background-color: #f00; color: #fff; border-radius: 50%; padding: 5px;">{{ total_quantity }}</span>
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
           </div>
         </nav>
 
         <!--Main-->
           <!--Banner-->
           {% block Banner_slider %}{% endblock Banner_slider %}
-          
           <!--main-body-->
           {% block main-content %}{% endblock main-content %}
+          <!--product_cat-->
+          {% block danhmuc%} {% endblock danhmuc %}
           <!--login-->
           {% block login_content%}{% endblock login_content %}
           <!--register-->
@@ -258,7 +266,7 @@
           {% block content_checkout %}{% endblock content_checkout %}
           <!--product-->
           {% block product_checkout %}{% endblock product_checkout %}
-          {% block product_ca%}{% endblock product_ca%}
+          {% block manage_user %}{% endblock manage_user %}
           <!--seach-->
           {% block content %}{% endblock content %}
         <!--footer-->
