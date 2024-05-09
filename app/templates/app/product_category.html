@@ -1,0 +1,80 @@
+{% extends "app/base.html" %} {% load static %}
+<!--Banner-->
+{% load humanize %} 
+<!--main-->
+{% block product_ca%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* CSS styles for better presentation */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Search Products by Category</h2>
+        <form id="searchForm">
+            <label for="category">Select Category:</label>
+            <select id="category">
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="books">Books</option>
+                <!-- Add more categories here -->
+            </select>
+            <label for="keyword">Keyword:</label>
+            <input type="text" id="keyword" placeholder="Enter keyword">
+            <button type="button" onclick="searchProducts()">Search</button>
+        </form>
+        <div id="searchResults">
+            <!-- Search results will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        function searchProducts() {
+            // Get selected category and keyword
+            var category = document.getElementById("category").value;
+            var keyword = document.getElementById("keyword").value;
+
+            // You can send this data to your backend using AJAX
+            // and fetch the search results dynamically
+            // For demonstration purposes, let's just display a message here
+            var searchResultsDiv = document.getElementById("searchResults");
+            searchResultsDiv.innerHTML = "<p>Searching products in category: " + category + " with keyword: " + keyword + "</p>";
+        }
+    </script>
+</body>
+{% endblock product_ca%}

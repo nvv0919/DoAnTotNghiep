@@ -1,0 +1,166 @@
+{% extends "app/base.html" %} {% load static %}
+<!--Banner-->
+{% load humanize %} {% block Banner_slider %}
+<div
+  id="carouselExampleControlsNoTouching"
+  class="carousel slide"
+  data-bs-touch="false"
+  style="padding-left: 200px; padding-right: 200px;"
+>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        src="{%static 'app/images/banner/banner1.jpg'%}"
+        class="d-block w-100"
+        alt="Banner1"
+        height="500"
+      />
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{%static 'app/images/banner/banner2.jpg'%}"
+        class="d-block w-100"
+        alt="Banner2"
+        height="500"
+      />
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{%static 'app/images/banner/banner3.jpg'%}"
+        class="d-block w-100"
+        alt="Banner3"
+        height="500"
+      />
+    </div>
+    <div class="carousel-item">
+      <img
+        src="{%static 'app/images/banner/banner4.jpg'%}"
+        class="d-block w-100"
+        alt="Banner3"
+        height="500"
+      />
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleControlsNoTouching"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleControlsNoTouching"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{% endblock Banner_slider %}
+<!--main-body-->
+
+{% block main-content %}
+<style>
+  .product-container {
+    margin: 50px 50px 50px 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Căn trái */
+    align-items: flex-start;
+  }
+
+  .product-card {
+    width: 200px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    
+  }
+  .product-item{
+    text-decoration: none;
+  }
+  .product-image {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 20px;
+  }
+
+  .product-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .product-price {
+    font-size: 16px;
+    color: #ee4d2d;
+    margin-bottom: 5px;
+  }
+
+  .product-sold {
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+  }
+
+  .product-discounted-price {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+    margin-bottom: 5px;
+  }
+
+  .add-to-cart-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Thêm margin top để tạo khoảng cách giữa nút và thông tin sản phẩm */
+  }
+
+  .add-to-cart-button:hover {
+    background-color: #0056b3;
+  }
+  .product-price {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+  }
+
+  .product-price::after {
+      content: " VNĐ";
+      unicode-bidi: bidi-override;
+      direction: ltr;
+  }
+</style>
+
+<div class="product-container" style="padding-left: 200px; padding-right: 200px;">
+  {% csrf_token %}
+  {% for product in products %}
+  <div class="product-card">
+    <a href="{% url 'product_detail' product.id %}" class="product-item">
+      {% if product.image %}
+      <img class="product-image" src="{{ product.image.url }}" alt="Sản phẩm" />
+      {% else %}
+      <p>Không có hình ảnh sản phẩm.</p>
+      {% endif %}
+      <h3 class="product-title">{{ product.name }}</h3>
+      <div class="product-price">{{ product.price|floatformat:0|intcomma }} VNĐ</div>
+      <div class="product-discounted-price">{{ product.discount_price }}</div>
+      <div class="product-sold">Số lượng: {{ product.number_product }} sp</div>
+      <button class="add-to-cart-button"  >Xem sản phẩm</button>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock main-content %}

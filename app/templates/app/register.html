@@ -1,0 +1,161 @@
+{% extends "app/base.html" %} {% load static %}
+<!--register-->
+
+{% block register_content%}
+<style>
+  .gradient-custom-3 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(
+      to right,
+      rgba(132, 250, 176, 0.5),
+      rgba(143, 211, 244, 0.5)
+    );
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(
+      to right,
+      rgba(132, 250, 176, 0.5),
+      rgba(143, 211, 244, 0.5)
+    );
+  }
+  .gradient-custom-4 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(
+      to right,
+      rgba(132, 250, 176, 1),
+      rgba(143, 211, 244, 1)
+    );
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(
+      to right,
+      rgba(132, 250, 176, 1),
+      rgba(143, 211, 244, 1)
+    );
+  }
+  .input-group input {
+    width: 400px; /* Chiều rộng mong muốn */
+  }
+</style>
+<div class="mask d-flex align-items-center h-100 gradient-custom-3">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+        <div class="card" style="border-radius: 15px">
+          <div class="card-body p-5">
+            <h2 class="text-uppercase text-center mb-5">Tạo tài khoản</h2>
+            <form class="row g-3 mx-auto" action="{% url 'register' %}" method="post">
+              {% csrf_token %}
+            
+              <div class="col-12">
+                <label class="form-label" for="username">Tên người dùng</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  {{ form.username }}
+                </div>
+                {% if messages %}
+                <ul class="messages">
+                  {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </div>
+            
+              <div class="col-12">
+                <label class="form-label" for="password">Mật khẩu</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </div>
+                  {{ form.password1 }}
+                </div>
+              </div>
+            
+              <div class="col-12">
+                <label class="form-label" for="password">Nhập lại mật khẩu</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </div>
+                  {{ form.password2 }}
+                </div>
+              </div>
+            
+              <div class="col-12">
+                <label class="form-label" for="fullname">Họ và tên</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  {{ form.full_name }}
+                </div>
+              </div>
+            
+              <div class="col-12">
+                <label class="form-label" for="email">Email</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                  </div>
+                  {{ form.email }}
+                </div>
+              </div>
+            
+              <div class="col-12">
+                <label class="form-label" for="address">Địa chỉ</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                  </div>
+                  {{ form.address }}
+                </div>
+              </div>
+            
+              <div class="col-12">
+                <label class="form-label" for="phoneNumber">Số điện thoại</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-phone"></i>
+                    </span>
+                  </div>
+                  {{ form.phone_number }}
+                </div>
+              </div>
+            
+              <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
+              </div>
+              <div class="col-12 text-center">
+                <a href="{% url 'login' %}" class="text-body">Đăng nhập</a>
+              </div>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock register_content %}

@@ -1,0 +1,119 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block cart_content %}
+
+<style>
+  /* CSS đã được điều chỉnh */
+  .quantity-container {
+    display: inline-block;
+  }
+
+  .quantity {
+    display: inline-block;
+  }
+
+  .chg-quantity {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+  }
+
+  .chg-quantity:hover {
+    background-color: #aaa;
+  }
+
+  .fa-minus,
+  .fa-plus {
+    font-size: 10px;
+  }
+
+  .col-lg-7 {
+    margin-right: 15px; 
+  }
+
+  .col-lg-2 img {
+    width: 100%; 
+  }
+  .product-link {
+    text-decoration: none; /* Bỏ dấu gạch dưới */
+    color: black; /* Đổi màu link */
+  }
+</style>
+
+<div class="row">
+  <div class="col-lg-2 text-center mt-3">
+    <img
+      class="vertical-banner"
+      src="{% static 'app/images/anhdoc.jpg' %}"
+      alt="Vertical Banner"
+    />
+  </div>
+  <div class="col-lg-7 mt-3">
+    <div class="box-element">
+      <a class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Tiếp tục mua</a>
+      <br />
+      <br />
+      <table class="table">
+        <tr>
+          <th>
+            <h5>Số đơn hàng: <strong id="total_quantity">{{ total_quantity }}</strong></h5>
+          </th>
+          <th>
+            <h5>Tổng tiền: <strong id="total_amount">{{ total_price }}</strong></h5>
+          </th>
+          <th>
+            <a class="btn btn-success" href="{% url 'checkout' %}" style="float: right; margin: 5px">Mua</a>
+          </th>
+        </tr>
+      </table>
+    </div>
+
+    <br />
+    <div class="box-element">
+      <div class="cart-row" style="display: flex; align-items: center;">
+          <div style="flex: 2;"><strong>Hình ảnh</strong></div>
+          <div style="flex: 2;"><strong>Sản phẩm</strong></div>
+          <div style="flex: 2;"><strong>Giá tiền</strong></div>
+          <div style="flex: 1;"><strong>Số lượng</strong></div>
+          <div style="flex: 2;"><strong>Tổng tiền</strong></div>
+          <div style="flex: 1;"><strong>Thao tác</strong></div>
+      </div>
+      {% for item in items %}
+      <div class="cart-row" style="display: flex; align-items: center;">
+          <div style="flex: 2;">
+              <img class="row-image" src="{{ item.product.image.url }}" alt="Product Image" style="width: 60%;">
+          </div>
+          <div style="flex: 2;">
+              <a class="product-link" href="{% url 'product_detail' item.product.id %}" >{{ item.product.name }}</a>
+          </div>
+          <div style="flex: 2;">
+              <p class="product-price" id="price_{{ item.id }}">{{ item.product.price|intcomma }} VNĐ</p>
+          </div>
+          <div style="flex: 1;">
+            <div class="quantity-container">
+              <button class="chg-quantity decrease update-cart" data-product={{item.product.id}} data-action='remove'>
+                <i class="fas fa-minus"></i>
+              </button>
+              <div class="quantity">
+                <p id="quantity_{{ item.id }}">{{ item.quantity }}</p>
+              </div>
+              <button class="chg-quantity increase update-cart" data-product={{item.product.id}} data-action='add'>
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div style="flex: 2;">
+              <p class="product-total" id="total_{{ item.id }}">{{ item.total_price|intcomma }} VNĐ</p>
+          </div>
+          <div style="flex: 1;">
+            <button class="btn btn-danger delete-product" data-product="{{ item.product.id }}">Xoá</button>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock cart_content %}

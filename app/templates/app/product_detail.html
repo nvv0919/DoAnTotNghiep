@@ -1,0 +1,235 @@
+{% extends "app/base.html" %} {% load static %}
+<!--product-->
+{% block product_checkout %}
+<style>
+  .product {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-left: 300px;
+    margin-right: 300px;
+    max-width: 1600px;
+  }
+  .product-description {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-left: 300px;
+    margin-right: 300px;
+    max-width: 1600px;
+  }
+  .product-reviews {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-left: 300px;
+    margin-right: 300px;
+    max-width: 1600px;
+  }
+  .product-image-container {
+    margin-right: 20px;
+  }
+
+  .product-image {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+  }
+
+  .product-details {
+    flex: 1;
+  }
+
+  .product-name {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .product-category,
+  .product-price,
+  .product-description,
+  .product-number,
+  .product-created {
+    margin-bottom: 10px;
+  }
+
+  .product-actions {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .add-to-cart-button, .buy-now-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px ;
+    margin-right: 20px;
+}
+
+  .product-reviews {
+    margin-top: 50px;
+  }
+
+  .product-reviews h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .product-description {
+    margin-top: 30px;
+  }
+
+  .product-description p {
+    margin-bottom: 10px;
+  }
+
+  .product-reviews {
+    margin-top: 50px;
+  }
+
+  .product-reviews h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .product-container {
+    margin: 0 auto; /* Canh giữa sản phẩm trên trang */
+    padding: 20px; /* Khoảng cách giữa sản phẩm và lề trang */
+    max-width: 1200px; /* Giới hạn chiều rộng tối đa của sản phẩm */
+  }
+  
+  /* Đảm bảo rằng các phần tử con của .product-container có cùng các thuộc tính */
+  .product-container > div {
+    margin-bottom: 20px; /* Khoảng cách giữa các phần tử con */
+  }
+  
+  /* Định dạng tiêu đề sản phẩm */
+  .product-name {
+    font-size: 28px; /* Kích thước chữ tiêu đề lớn hơn */
+    margin-bottom: 15px; /* Khoảng cách dưới tiêu đề */
+  }
+  
+  /* Định dạng giá sản phẩm */
+  .product-price {
+    font-weight: bold; /* Làm nổi bật giá */
+    font-size: 20px; /* Kích thước chữ lớn hơn */
+    color: #ff5733; /* Chọn màu sắc bạn muốn */
+  }
+  
+  /* Định dạng số lượng sản phẩm */
+  .product-quantity {
+    margin-top: 15px; /* Khoảng cách trên số lượng */
+  }
+  
+  /* Định dạng nút thêm vào giỏ hàng và mua ngay */
+  .add-to-cart-button,
+  .buy-now-button {
+    padding: 10px 20px; /* Tăng kích thước nút */
+    font-size: 16px; /* Kích thước chữ nhỏ hơn */
+  }
+  
+  /* Định dạng mô tả sản phẩm */
+  .product-description p {
+    line-height: 1.6; /* Khoảng cách dòng lớn hơn */
+  }
+  
+  /* Định dạng phần nhận xét sản phẩm */
+  .product-reviews p {
+    line-height: 1.6; /* Khoảng cách dòng lớn hơn */
+  }
+  
+  /* Tạo hiệu ứng hover cho nút thêm vào giỏ hàng và mua ngay */
+  .add-to-cart-button:hover,
+  .buy-now-button:hover {
+    background-color: #0056b3; /* Màu nền tối hơn khi hover */
+  }
+  
+  /* Định dạng danh mục sản phẩm */
+  .product-category {
+    display: inline-block; /* Hiển thị danh mục trên cùng một dòng */
+    background-color: #007bff; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    border: none; /* Không có viền */
+    border-radius: 4px; /* Đường viền cong */
+    padding: 5px 10px; /* Kích thước nút */
+    margin-top: 10px; /* Khoảng cách trên */
+  }
+  
+  /* Định dạng hiển thị danh mục khi hover */
+  .product-category:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+  }
+</style>
+<div class="product">
+  <div class="product-image-container">
+    <img
+      src="{{ product.image.url }}"
+      alt="{{ product.name }}"
+      class="product-image"
+    />
+  </div>
+  <div class="product-details">
+    <h2 class="product-name">{{ product.name }}</h2>
+    <p class="product-category">{{ product.category }}</p>
+    <p class="product-price">Giá: {{ product.price }}</p>
+    <p class="product-number">
+      Số lượng sản phẩm: {{ product.number_product }}
+    </p>
+    <p class="product-sold">Số lượng đã bán: {{ product.sold_quantity }}</p>
+    <div class="product-quantity">
+      <label for="quantity">Số lượng mua:</label>
+      <div class="quantity-control">
+        <button class="quantity-decrease">-</button>
+        <input type="number" id="quantity" name="quantity" min="1" value="1" />
+        <button class="quantity-increase">+</button>
+      </div>
+    </div>
+    <div class="product-actions">
+      <button class="add-to-cart-button add-btn update-cart" data-action="add" data-product={{product.id}}>Thêm vào giỏ hàng</button>
+      <button class="buy-now-button">Mua ngay</button>
+    </div>
+  </div>
+</div>
+<div class="product-description">
+  <div>
+    <h3>Mô tả</h3>
+    <br />
+    <p>{{ product.description }}</p>
+  </div>
+</div>
+<div class="product-reviews">
+  <div>
+    <h3>Nhận xét</h3>
+    <br />
+    <p>{{ product.description }}</p>
+  </div>
+</div>
+<script>
+  // Lấy tham chiếu đến phần tử số lượng
+  var quantityInput = document.getElementById('quantity');
+
+  // Lấy tham chiếu đến các nút tăng/giảm số lượng
+  var decreaseButton = document.querySelector('.quantity-decrease');
+  var increaseButton = document.querySelector('.quantity-increase');
+
+  // Xử lý sự kiện khi nút giảm được nhấn
+  decreaseButton.addEventListener('click', function() {
+    var currentValue = parseInt(quantityInput.value);
+    if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+    }
+  });
+
+  // Xử lý sự kiện khi nút tăng được nhấn
+  increaseButton.addEventListener('click', function() {
+    var currentValue = parseInt(quantityInput.value);
+    quantityInput.value = currentValue + 1;
+  });
+</script>
+{% endblock product_checkout %}

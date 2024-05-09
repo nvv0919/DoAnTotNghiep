@@ -1,0 +1,125 @@
+{% extends "app/base.html" %}
+{% load static %}
+<!--register-->
+{% load humanize %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .product-container {
+          margin: 50px 50px 50px 100px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-start; /* Căn trái */
+          align-items: flex-start;
+        }
+      
+        .product-card {
+          width: 200px;
+          margin: 5px;
+          padding: 5px;
+          text-align: center;
+          background-color: #f5f5f5;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          display: inline-flex; /* Hiển thị theo hàng ngang */
+          flex-direction: column; /* Hiển thị các phần tử theo chiều dọc */
+        }
+      
+        .product-image {
+          width: 100%;
+          height: 120px;
+          margin-bottom: 10px;
+        }
+      
+        .product-title {
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+      
+        .product-price {
+          font-size: 16px;
+          color: #ee4d2d;
+          margin-bottom: 5px;
+        }
+      
+        .product-sold {
+          font-size: 12px;
+          color: #999;
+          text-align: right;
+        }
+      
+        .product-discounted-price {
+          font-size: 12px;
+          color: #999;
+          text-decoration: line-through;
+          margin-bottom: 5px;
+        }
+      
+        .add-to-cart-button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          padding: 5px 10px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+      
+        .add-to-cart-button:hover {
+          background-color: #0056b3;
+        }
+        .text {
+            margin: 0px 50px 50px 200px;
+            text-align: left;
+          }
+      </style>
+    <script>
+        function sortProducts() {
+            var sortOption = document.getElementById('sort-select').value;
+            var currentUrl = window.location.href;
+            var newUrl = currentUrl + (currentUrl.indexOf('?') === -1 ? '?' : '&') + 'sort=' + sortOption;
+            window.location.href = newUrl;
+        }
+    </script>   
+</head>
+<body>
+    <div class="text">
+        <h2>Kết quả tìm kiếm được</h2>
+    
+        <!-- Form để chọn phương thức sắp xếp -->
+        <form method="GET" id="sort-form">
+            <label for="sort"></label>
+            <select name="sort" id="sort-select">
+                <option value="price_asc">Sắp xếp thấp đến cao</option>
+                <option value="price_desc">Sắp xếp cao đến thấp</option>
+            </select>
+            <button type="button" onclick="sortProducts()">Sắp xếp</button>
+        </form>
+    </div>
+
+    <!-- Danh sách sản phẩm tìm kiếm -->
+    <div class="product-container" style="padding-left: 200px; padding-right: 200px;">
+        {% for product in products %}
+        <div class="product-card">
+          <a href="{% url 'product_detail' product.id %}">
+            {% if product.image %}
+            <img class="product-image" src="{{ product.image.url }}" alt="Sản phẩm" />
+            {% else %}
+            <p>Không có hình ảnh sản phẩm.</p>
+            {% endif %}
+            <h6 class="product-title">{{ product.name }}</h6>
+            <div class="product-price">{{ product.price|intcomma }} VNĐ</div>
+            <div class="product-discounted-price">{{ product.discount_price }}</div>
+            <div class="product-sold">Số lượng: {{ product.number_product }} sp</div>
+            <div class="product-sold">Đã bán: {{ product.sold }} sp</div>
+            <button class="add-to-cart-button">Thêm vào giỏ hàng</button>
+          </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock content %}
