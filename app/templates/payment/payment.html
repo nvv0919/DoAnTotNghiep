@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label for="order_desc">Nội dung thanh toán</label>
-                <textarea class="form-control" cols="20" id="order_desc" name="order_desc" rows="2">Thanh toan don hang thoi gian: {% now "Y-m-d H:i:s" %}</textarea>
+                <textarea class="form-control" cols="20" id="order_desc" name="order_desc" rows="2">Thanh toán hoá đơn thời gian: {% now "Y-m-d H:i:s" %}</textarea>
             </div>
             <div class="form-group">
                 <label for="bank_code">Ngân hàng</label>
@@ -62,7 +62,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-default">Thanh toán Redirect</button>
+            <button type="submit" class="btn btn-default">Thanh toán</button>
             {% csrf_token %}
             <div class="form-group"></div>
         </form>
