@@ -1,0 +1,201 @@
+{% extends "app/base.html" %} {% load static %}
+
+{% block danhmuc %}
+{% load humanize %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem Sản Phẩm theo Danh Mục</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .category-column {
+            float: left;
+            width: 20%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .product-column {
+            float: left;
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .category-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .category-list li {
+            margin-bottom: 10px;
+        }
+
+        .category-list a {
+            display: block;
+            padding: 5px 10px;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+
+        .category-list a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .product-card {
+            width: calc(25% - 20px);
+            margin: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-item {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: #ee4d2d;
+        }
+
+        .product-sold {
+            font-size: 12px;
+            color: #999;
+            text-align: right;
+        }
+
+        .add-to-cart-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #0056b3;
+        }
+        /* Đảm bảo các ô sản phẩm có kích thước bằng nhau */
+        .product-card {
+            width: 120%;
+            padding: 15px; /* Thêm padding để tạo khoảng cách giữa các ô sản phẩm */
+        }
+
+        /* Đảm bảo hiển thị 5 sản phẩm trên mỗi hàng */
+        .product-column {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Canh chỉnh các ô sản phẩm theo chiều ngang */
+        }
+
+        /* Thiết lập kích thước cho ô sản phẩm */
+        .product-card {
+            width: calc(30% - 20px); /* Chiều rộng của mỗi ô sản phẩm */
+            margin-bottom: 20px;
+        }
+
+        /* Đảm bảo các ô sản phẩm nằm trên cùng một hàng */
+        .product-column::after {
+            content: "";
+            flex: auto; /* Chia đều không gian còn lại trên hàng */
+        }
+        /* Đánh dấu danh mục đã chọn */
+        .selected-category {
+            font-weight: bold;
+            color: red;
+          }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-md-2" >
+                <!-- Danh sách danh mục -->
+                <h3 style="color: black;">Danh Mục</h3>
+                <ul class="category-list">
+                    {% for category in categories %}
+                    <li>
+                        <a class="dropdown-item {% if category.category_name == selected_category.category_name %}selected-category{% endif %}" href="{% url 'product_category' category.category_name %}">{{ category.category_name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <!-- Lựa chọn sắp xếp -->
+                {% comment %} <div class="sort-dropdown">
+                    <label for="sort">Sắp Xếp:</label>
+                    <select name="sort" id="sort">
+                        <option value="price_asc">Giá: Thấp đến cao</option>
+                        <option value="price_desc">Giá: Cao đến thấp</option>
+                        <option value="name_asc">Tên: A đến Z</option>
+                        <option value="name_desc">Tên: Z đến A</option>
+                    </select>
+                </div> {% endcomment %}
+                <!-- Danh sách sản phẩm -->
+                <div class="product-container" style="padding-left: 100px; padding-right: 100px;">
+                    {% csrf_token %}
+                    {% for product in products %}
+                    <div class="product-card">
+                      <a href="{% url 'product_detail' product.id %}" class="product-item">
+                        {% if product.image %}
+                        <img class="product-image" src="{{ product.image.url }}" alt="Sản phẩm" />
+                        {% else %}
+                        <p>Không có hình ảnh sản phẩm.</p>
+                        {% endif %}
+                        <h3 class="product-title">{{ product.name }}</h3>
+                        <div class="product-price">{{ product.price|floatformat:0|intcomma }} VNĐ</div>
+                        <div class="product-discounted-price">{{ product.discount_price }}</div>
+                        <div class="product-sold">Số lượng: {{ product.number_product }} sp</div>
+                      </a>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <script>
+                    const priceElements = document.querySelectorAll('.product-price');
+                    priceElements.forEach((priceElement) => {
+                      const price = parseInt(priceElement.textContent.replace(/\D/g, ''));
+                      const formattedPrice = new Intl.NumberFormat('vi-VN').format(price);
+                      priceElement.textContent = formattedPrice + ' VNĐ';
+                    });
+                  </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock danhmuc %}

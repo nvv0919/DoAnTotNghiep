@@ -1,0 +1,152 @@
+{% extends "app/base.html" %} {% load static %}
+
+<!--login-->
+{% block manage_user %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý thông tin cá nhân</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #f1f1f1;
+      padding: 10px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 10px;
+    }
+
+    .main-content h2 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      display: flex; /* Sử dụng Flexbox */
+      align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-right: 30px; /* Khoảng cách giữa label và input */
+      width: 150px; /* Độ rộng của label */
+    }
+    .form-group {
+      margin-bottom: 30px; /* Khoảng cách giữa các hàng */
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <ul>
+        <li><a href="#" onclick="showContent('account')"><i class="fas fa-user icon"></i> Thông tin cá nhân</a></li>
+        <li><a href="{% url 'cart' %}" onclick="showContent('orders')"><i class="fas fa-shopping-cart icon"></i> Đơn hàng</a></li>
+        <li><a href="#" onclick="showContent('addresses')"><i class="fas fa-map-marker-alt icon"></i> Địa chỉ giao hàng</a></li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <div id="account">
+        <h2>Thông tin cá nhân</h2>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Tên đăng nhập:</label>
+            <input type="text" id="username" name="username" value="{{ customer.username }}" disabled>
+          </div>
+          <div class="form-group">
+            <label for="fullname">Họ và tên:</label>
+            <input type="text" id="fullname" name="fullname" value="{{ customer.full_name }}">
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ customer.email }}">
+          </div>
+          <div class="form-group">
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" name="address" value="{{ customer.address }}">
+          </div>
+          <div class="form-group">
+            <label for="phone">Số điện thoại:</label>
+            <input type="text" id="phone" name="phone" value="{{ customer.phone_number }}">
+          </div>
+          <div class="form-group">
+            <button type="submit">Cập nhật thông tin</button>
+          </div>
+        </form>
+      </div>
+      <div id="orders" style="display:none;">
+        <h2>Đơn hàng</h2>
+        <!-- Nội dung của trang Đơn hàng -->
+      </div>
+      <div id="addresses" style="display:none;">
+        <h2>Địa chỉ giao hàng</h2>
+        <!-- Nội dung của trang Địa chỉ giao hàng -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  function showContent(contentId) {
+    // Ẩn tất cả các nội dung trang
+    var contents = document.querySelectorAll('.main-content > div');
+    contents.forEach(function(content) {
+      content.style.display = 'none';
+    });
+  
+    // Hiển thị nội dung trang được chọn
+    var selectedContent = document.getElementById(contentId);
+    if (selectedContent) {
+      selectedContent.style.display = 'block';
+    }
+  }
+  </script>
+{% endblock manage_user %}
