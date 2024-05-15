@@ -1,0 +1,108 @@
+{% extends "app/base.html" %} {% load static %}
+
+<!--login-->
+{% block manage_order %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý thông tin cá nhân</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #f1f1f1;
+      padding: 10px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 10px;
+    }
+
+    .main-content h2 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      display: flex; /* Sử dụng Flexbox */
+      align-items: center; /* Căn chỉnh các phần tử theo trục dọc */
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-right: 30px; /* Khoảng cách giữa label và input */
+      width: 150px; /* Độ rộng của label */
+    }
+    .form-group {
+      margin-bottom: 30px; /* Khoảng cách giữa các hàng */
+    }
+
+    .form-group input {
+      width: 50%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      float: left;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+  </div>
+</body>
+</html>
+<script>
+  function showContent(contentId) {
+    // Ẩn tất cả các nội dung trang
+    var contents = document.querySelectorAll('.main-content > div');
+    contents.forEach(function(content) {
+      content.style.display = 'none';
+    });
+  
+    // Hiển thị nội dung trang được chọn
+    var selectedContent = document.getElementById(contentId);
+    if (selectedContent) {
+      selectedContent.style.display = 'block';
+    }
+  }
+  </script>
+{% endblock manage_order %}
